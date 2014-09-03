@@ -1,7 +1,6 @@
 #import libraries 
 import csv
-import sys
-#import pyodbc as p
+import sys	
 import re
 import string
 import sqlite3 as sql
@@ -25,6 +24,7 @@ except:
 ##			       ##	
 #################################
 
+# Find Most Expensive Hospitals Nationally, by Procedure
 cur.execute("""
 SELECT Providers.Name, Providers.City, Providers.State, OutpatientVisits.APC, MAX(OutPatientVisits.AverageTotalPayments) 
 FROM OutPatientVisits
@@ -38,6 +38,7 @@ rows = cur.fetchall()
 for row in rows:
 	print row
 
+# Find 
 print "\nThe Least Expensive Procedure Locations\n"
 cur.execute("""
 SELECT Providers.Name, Providers.City, Providers.State, OutpatientVisits.APC, MIN(OutPatientVisits.AverageTotalPayments)
