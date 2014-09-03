@@ -1,7 +1,6 @@
 #import libraries 
 import csv
 import sys
-#import pyodbc as p
 import re
 import string
 import sqlite3 as sql
@@ -25,6 +24,37 @@ count = 0
 providers = []
 services = []
 
+#method to get procedure ID
+def getID(name):
+	name = name.split('-')
+	name[0] = name[0].strip()
+	return name[0]
+
+#get procedure name
+def getName(name):
+	name = name.split('-')
+	name[1] = name[1].strip()
+	return name[1]
+
+#method to get username from name
+def get_username(name):
+	name = name.replace('\'', '')
+	name_split = string.split(name);
+	if len(name_split) > 1:
+		username = string.lower(name_split[0][0]) + name_split[len(name_split) - 1]
+		return username
+	else:
+		return name
+
+def printTable(table):
+	for row in table:
+		rownum = 0
+		print "\n"
+		for i in row:
+			print "%d: %s" %(rownum, i)
+			rownum += 1
+
+
 #########################################################
 ## Read from .csv file into Key-Value mapping 'tables' ##
 #########################################################
@@ -43,11 +73,17 @@ try:
 		else:
 			colnum = 0	
 			for col in row:
-				print '%s: %d: %s' % (header[colnum], colnum, col)
+				#print '%s: %d: %s' % (header[colnum], colnum, col)
 				if colnum in (1, 2, 3, 4, 5, 6, 7):
 					L1.append(col)
 				if colnum in (1, 0, 8, 9, 10):
-					L2.append(col)
+					if colnum == 0:
+						procedureID = getID(col)
+						description = getName(col)
+						L2.append(procedureID)
+						L2.append(description)
+					else:
+						L2.append(col)
 				colnum = colnum + 1
 		print "\n"
 		if (len(L1) > 0):
@@ -80,20 +116,21 @@ print "Out of %d attempts, there were %d providers inserted and %d duplicates" %
 cur.execute("SELECT Count(*) FROM Providers") 	
 print cur.fetchone()
 
+#printTable(services)
 #Insert values into table
 success = 0
 fail = 0
 for value in services:
 	try:	
 		cur.execute("""
-			INSERT INTO OutpatientVisits(APC, ProviderID, OutpatientServices, AverageSubmittedCharges, AverageTotalPayments, Year) VALUES(?, ?, ?, ?, ?, 2011)
-			""", (value[0], value[1], value[2], value[3], value[4]))
+			INSERT INTO OutpatientVisits(APCID, ProviderID, OutpatientServices, AverageSubmittedCharges, AverageTotalPayments, Year) VALUES(?, ?, ?, ?, ?, 2011)
+			""", (value[0], value[2], value[3], value[4], value[5]))
 		success += 1
 	except:
 		message = "There was an error inserting into the services table"
 		fail += 1
-		print message
+		#print message
 print "Out of %d insertion attempts for the services table, there were %d successes and %d failures" %(success + fail, success, fail)
 #save changes
-#con.commit()
+con.commit()
 
