@@ -76,8 +76,7 @@ On Providers.ID = OutPatientVisits.ProviderID
 INNER JOIN OutpatientServices
 ON OutPatientVisits.APCID = OutPatientServices.ID
 GROUP BY OutPatientVisits.APCID
-ORDER BY MIN(OutpatientVisits.AverageTotalPayments) ASC
-""")
+ORDER BY MIN(OutpatientVisits.AverageTotalPayments) ASC/""")
 print "%-45s %-19s %-9s %-44s %-10s %-10s" %("Hospital", "City", "State", "Procedure", "Cost", "National Average")
 print "-------------------------------------------------------------------------------------------------------------------------------------------------------------"
 printTable(cur)
@@ -96,3 +95,9 @@ ORDER BY MAX(OutpatientVisits.AverageSubmittedCharges - OutPatientVisits.Average
 print "%-45s %-19s %-9s %-44s %-10s %-10s %-10s" %("Hospital", "City", "State", "Procedure", "Charged", "Reimbursed", "Disparity")
 print "-------------------------------------------------------------------------------------------------------------------------------------------------------------"
 printTable(cur)
+
+
+cur.execute("Select Count(*) From Providers")
+print  cur.fetchone()
+cur.execute("Select Count(*) From Outpatientvisits")
+print cur.fetchone()

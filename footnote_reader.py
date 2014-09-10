@@ -90,6 +90,9 @@ for row in rows:
 #cur.execute("PRAGMA table_info(Providers)")
 #print cur.fetchall()
 
+cur.execute("ALTER TABLE PROVIDERS ADD County varchar(100)")
+cur.execute("ALTER TABLE PROVIDERS ADD PhoneNumber varchar(10)")
+
 #update provider information table with new information
 success = 0
 fail = 0
