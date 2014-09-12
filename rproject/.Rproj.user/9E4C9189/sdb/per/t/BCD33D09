@@ -1,0 +1,16 @@
+{
+    "contents" : "# server.R\n\nlibrary(shiny)\n\nlibrary(\"ggplot2\")\nlibrary(\"lubridate\")\noptions(java.parameters=\"-Xmx2g\")\nlibrary(rJava)\nlibrary(RJDBC)\n\njdbcDriver <- JDBC(driverClass=\"oracle.jdbc.OracleDriver\", classPath=\"/Library/Java/JavaVirtualMachines/jdk1.7.0_65.jdk/Contents/Home/ojdbc6.jar\")\n\n# In the following, use your username and password instead of \"CS347_prof\", \"orcl_prof\" once you have an Oracle account\npossibleError <- tryCatch(\n  jdbcConnection <- dbConnect(jdbcDriver, \"jdbc:oracle:thin:@128.83.138.158:1521:orcl\", \"C##cs347_prof\", \"orcl_prof\"),\n  error=function(e) e\n)\nif(!inherits(possibleError, \"error\")){\n  diamonds <- dbGetQuery(jdbcConnection, \"select \\\"carat\\\", \\\"price\\\", r.name, sales_date from diamonds d, diam_sale s, diam_retailer r where d.\\\"diamond_id\\\" = s.diamond_id and s.retailer_id = r.retailer_id\")\n  dbDisconnect(jdbcConnection)\n}\n\nshinyServer(function(input, output) {\n\n  output$distPlot <- renderPlot({\n    ggplot(subset(diamonds, year(SALES_DATE) == input$obs), aes(x = paste(year(SALES_DATE), month(SALES_DATE),sep=\"-\"), y = price)) + geom_point()\n    \n  })\n})\n",
+    "created" : 1410300652890.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3233771529",
+    "id" : "BCD33D09",
+    "lastKnownWriteTime" : 1410302913,
+    "path" : "~/Desktop/DataScienceFall2014/RProject/04Shiny/server.R",
+    "project_path" : "04Shiny/server.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

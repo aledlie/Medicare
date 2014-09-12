@@ -1,0 +1,16 @@
+{
+    "contents" : "#ui.R \n\nlibrary(shiny)\n\n# Define UI for application that plots random distributions \nshinyUI(pageWithSidebar(\n\n  # Application title\n  headerPanel(\"Hello Shiny!\"),\n\n  # Sidebar with a slider input for number of observations\n  sidebarPanel(\n    sliderInput(\"obs\", \n                \"Number of observations:\", \n                min = 2009,\n                max = 2013, \n                value = 2009)\n  ),\n\n  # Show a plot of the generated distribution\n  mainPanel(\n    plotOutput(\"distPlot\")\n  )\n))\n",
+    "created" : 1410300645835.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3647898530",
+    "id" : "D84158C7",
+    "lastKnownWriteTime" : 1410300428,
+    "path" : "~/Desktop/DataScienceFall2014/RProject/04Shiny/ui.R",
+    "project_path" : "04Shiny/ui.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
